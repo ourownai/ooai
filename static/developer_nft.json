@@ -1,0 +1,48 @@
+{
+  "task": {
+    "id": "task-123",
+    "title": "Implement new feature",
+    "description": "Add a new feature to the project",
+    "status": "open",
+    "rewards": {
+      "concept": 0.01,
+      "testing": 0.24,
+      "production": 0.75
+    }
+  },
+  "contributor": {
+    "name": "John Doe",
+    "email": "john@example.com",
+    "wallet_address": "0x1234567890123456789012345678901234567890"
+  },
+  "contribution": {
+    "task_id": "task-123",
+    "contributor": {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "wallet_address": "0x1234567890123456789012345678901234567890"
+    },
+    "commit_hash": "abcdef1234567890",
+    "merge_stage": "concept"
+  },
+  "nft": {
+    "id": "nft-123",
+    "task": {
+      "id": "task-123",
+      "title": "Implement new feature",
+      "description": "Add a new feature to the project",
+      "status": "open",
+      "rewards": {
+        "concept": 0.01,
+        "testing": 0.24,
+        "production": 0.75
+      }
+    },
+    "contributor": {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "wallet_address": "0x1234567890123456789012345678901234567890"
+    },
+    "status": "pending"
+  }
+}

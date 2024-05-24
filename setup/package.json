@@ -1,0 +1,15 @@
+{
+  "main": "dist/index.js",
+  "dependencies": {
+    "@hasura/metadata": "^1.0.2",
+    "@hasura/metadata-api": "^0.1.0-prerelease.2",
+    "axios": "^1.4.0",
+    "format-graphql": "^1.4.0",
+    "graphql": "^16.8.0",
+    "lodash": "^4.17.21",
+    "microfiber": "^2.1.0",
+    "openapi-to-graphql": "^3.0.5",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
+  }
+}

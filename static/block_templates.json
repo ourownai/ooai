@@ -1,0 +1,212 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "InputIntent": {
+      "type": "object",
+      "properties": {
+        "intent": {
+          "type": "string",
+          "description": "The name of the intent to be processed."
+        },
+        "examples": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Examples of utterances that trigger this intent."
+        }
+      },
+      "required": ["intent"],
+      "additionalProperties": false
+    },
+    "InputEntity": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "type": "string",
+          "description": "The name of the entity to be extracted."
+        },
+        "examples": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Examples of values that this entity can take."
+        }
+      },
+      "required": ["entity"],
+      "additionalProperties": false
+    },
+    "InputSlot": {
+      "type": "object",
+      "properties": {
+        "slot": {
+          "type": "string",
+          "description": "The name of the slot to be filled."
+        },
+        "type": {
+          "type": "string",
+          "description": "The data type of the slot."
+        },
+        "initial_value": {
+          "type": ["string", "null"],
+          "description": "The initial value of the slot, if any."
+        },
+        "auto_fill": {
+          "type": "boolean",
+          "description": "Whether the slot can be auto-filled."
+        },
+        "influence_conversation": {
+          "type": "boolean",
+          "description": "Whether this slot influences the flow of the conversation."
+        }
+      },
+      "required": ["slot", "type"],
+      "additionalProperties": false
+    },
+    "OutputApiResponse": {
+      "type": "object",
+      "properties": {
+        "response_id": {
+          "type": "string",
+          "description": "A unique identifier for the response."
+        },
+        "text": {
+          "type": "string",
+          "description": "The text of the response to be displayed."
+        },
+        "buttons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "text": {"type": "string"},
+              "payload": {"type": "string"}
+            },
+            "required": ["text", "payload"],
+            "additionalProperties": false
+          },
+          "description": "A list of buttons to be displayed with the response."
+        },
+        "image": {
+          "type": "string",
+          "description": "URL of an image to be displayed with the response."
+        },
+        "custom": {
+          "type": "object",
+          "description": "Custom data to be included with the response."
+        }
+      },
+      "required": ["response_id", "text"],
+      "additionalProperties": false
+    },
+    "DataTransformation": {
+      "type": "object",
+      "properties": {
+        "input": {
+          "type": "object",
+          "description": "The input data for the transformation."
+        },
+        "transformation_logic": {
+          "type": "string",
+          "description": "A description or definition of the transformation logic."
+        },
+        "output": {
+          "type": "object",
+          "description": "The output data after transformation."
+        }
+      },
+      "required": ["input", "transformation_logic", "output"],
+      "additionalProperties": false
+    },
+    "DataTransmission": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "The URL to which the data should be transmitted."
+        },
+        "method": {
+          "type": "string",
+          "description": "The HTTP method to be used for the transmission."
+        },
+        "headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "HTTP headers to be included in the transmission."
+        },
+        "body": {
+          "type": "object",
+          "description": "The body of the request."
+        },
+        "authentication": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "The type of authentication to be used."
+            },
+            "credentials": {
+              "type": "object",
+              "description": "The credentials required for authentication."
+            }
+          },
+          "required": ["type"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["url", "method"],
+      "additionalProperties": false
+    },
+    "Prompt": {
+      "type": "object",
+      "properties": {
+        "output": {
+          "type": "string",
+          "description": "The output or message to be prompted to the user."
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Conditions under which this prompt should be displayed."
+        }
+      },
+      "required": ["output"],
+      "additionalProperties": false
+    },
+    "Delay": {
+      "type": "object",
+      "properties": {
+        "duration": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "The duration of the delay in seconds."
+        }
+      },
+      "required": ["duration"],
+      "additionalProperties": false
+    },
+    "Event": {
+      "type": "object",
+      "properties": {
+        "event_type": {
+          "type": "string",
+          "description": "The type of event."
+        },
+        "parameters": {
+          "type": "object",
+          "description": "Parameters associated with the event."
+        }
+      },
+      "required": ["event_type"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "description": "A schema representing various components used in application data handling and processing."
+}

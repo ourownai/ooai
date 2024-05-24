@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "title": "Unique Identifier",
+      "description": "A unique identifier for the message, using UUID format.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "name": {
+      "title": "Message Name",
+      "description": "The descriptive name of the message.",
+      "type": "string",
+      "minLength": 1
+    },
+    "data": {
+      "title": "Message Data",
+      "description": "An array of data items, each can be a key-value pair or content with a contentType.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          {
+            "title": "Key-Value Pair",
+            "description": "An object representing a simple key-value pair.",
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": "The key of the data item."
+              },
+              "value": {
+                "type": "string",
+                "description": "The value of the data item."
+              }
+            },
+            "additionalProperties": true,
+            "required": ["key", "value"]
+          },
+          {
+            "title": "Content Object",
+            "description": "An object holding content and its MIME type.",
+            "type": "object",
+            "properties": {
+              "content": {
+                "type": "string",
+                "description": "The actual content."
+              },
+              "contentType": {
+                "type": "string",
+                "description": "The MIME type of the content.",
+                "pattern": "^[a-zA-Z0-9-]+/[a-zA-Z0-9-+.]+$"
+              }
+            },
+            "additionalProperties": false,
+            "required": ["content", "contentType"]
+          }
+        ]
+      }
+    },
+    "header": {
+      "title": "Message Header",
+      "description": "Header information for the message.",
+      "type": "object",
+      "properties": {
+        "messageId": {
+          "title": "Message ID",
+          "description": "A unique identifier for this specific message.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "mimeType": {
+          "title": "MIME Type",
+          "description": "The MIME type of the message, specifying the format.",
+          "type": "string",
+          "format": "mime-type"
+        },
+        "timestamp": {
+          "title": "Timestamp",
+          "description": "ISO8601 formatted timestamp when the message was created.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "source": {
+          "title": "Source",
+          "description": "The origin source of the message.",
+          "type": "string"
+        },
+        "destination": {
+          "title": "Destination",
+          "description": "The intended recipient of the message.",
+          "type": "string"
+        },
+        "routingKey": {
+          "title": "Routing Key",
+          "description": "A key used for message routing.",
+          "type": "string"
+        },
+        "correlationId": {
+          "title": "Correlation ID",
+          "description": "An identifier used to correlate this message with others.",
+          "type": "string"
+        },
+        "replyTo": {
+          "title": "Reply To",
+          "description": "Address for where replies to this message should be sent.",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["messageId", "mimeType", "timestamp"]
+    }
+  },
+  "additionalProperties": false,
+  "required": ["id", "name", "data", "header"]
+}

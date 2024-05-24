@@ -1,0 +1,30 @@
+type User {
+  id: ID!
+  preferences: [Preference]!
+}
+
+type Entity {
+  label: String!
+  text: String!
+  interestedUsers: [User]!
+}
+
+type Preference {
+  user: User!
+  entity: Entity!
+  ts: Int! # Timestamp of the mention
+  score: Float! # Sentiment score
+}
+
+type Query {
+  # Retrieves preferences for a specific user
+  userPreferences(userId: ID!): [Preference]
+  
+  # Finds users interested in a specific entity
+  entityUsers(text: String!, label: String!): [User]
+}
+
+type Mutation {
+  # Adds a new user preference based on an utterance
+  addUserPreference(userId: ID!, text: String!, label: String!, ts: Int!, score: Float!): Preference
+}

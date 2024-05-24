@@ -1,0 +1,98 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "version": {
+        "type": "string",
+        "description": "The configuration version."
+      },
+      "user_types": {
+        "type": "object",
+        "description": "Configuration for different user types.",
+        "additionalProperties": {
+          "type": "object",
+          "properties": {
+            "warning_levels": {
+              "type": "object",
+              "description": "Warning levels for different configuration keys.",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 5
+              }
+            },
+            "permissions": {
+              "type": "array",
+              "description": "Permissions associated with the user type.",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": ["warning_levels"]
+        }
+      },
+      "preference_types": {
+        "type": "object",
+        "description": "Configuration for different preference types.",
+        "additionalProperties": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string",
+              "description": "Description of the preference type."
+            },
+            "value_type": {
+              "type": "string",
+              "description": "Data type of the preference value."
+            },
+            "default_value": {
+              "description": "Default value for the preference."
+            },
+            "allowed_values": {
+              "type": "array",
+              "description": "Allowed values for the preference.",
+              "items": {}
+            }
+          },
+          "required": ["description", "value_type", "default_value"]
+        }
+      },
+      "modules": {
+        "type": "object",
+        "description": "Configuration for individual modules.",
+        "additionalProperties": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Indicates whether the module is enabled or disabled.",
+              "default": false
+            },
+            "settings": {
+              "type": "object",
+              "description": "Module-specific settings.",
+              "default": {}
+            },
+            "overrides": {
+              "type": "object",
+              "description": "User type-specific overrides for module settings.",
+              "additionalProperties": {
+                "type": "object",
+                "description": "Overrides for a specific user type."
+              }
+            },
+            "dependencies": {
+              "type": "array",
+              "description": "Dependencies of the module.",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": ["enabled"]
+        }
+      }
+    },
+    "required": ["version", "user_types", "preference_types", "modules"]
+  }

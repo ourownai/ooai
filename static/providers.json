@@ -1,0 +1,175 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Provider Metadata",
+  "description": "A list of data handling providers with detailed metadata to help users decide which provider to use.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "The name of the data handling provider."
+      },
+      "providerType": {
+        "type": "string",
+        "enum": ["inference", "generative", "hybrid", "payment", "messaging"],
+        "description": "The type of service provided by the provider."
+      },
+      "connectionType": {
+        "type": "string",
+        "enum": ["rest", "grpc", "webhook"],
+        "description": "The type of connection used by the provider."
+      },
+      "config": {
+        "type": "object",
+        "description": "Provider-specific configuration details."
+      },
+      "supportedContentTypes": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["text", "image", "video", "audio"]
+        },
+        "description": "The types of content that the provider can process."
+      },
+      "costPerRequest": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "The cost amount per request."
+          },
+          "currency": {
+            "type": "string",
+            "description": "The currency in which cost is calculated."
+          }
+        },
+        "required": ["amount", "currency"],
+        "description": "The cost of making a single request to the provider."
+      },
+      "copyrightOwnership": {
+        "type": "string",
+        "enum": ["provider", "user", "shared"],
+        "description": "Who holds the copyright of the data processed by the provider."
+      },
+      "dataReproductionRights": {
+        "type": "string",
+        "enum": ["full", "limited", "none"],
+        "description": "The rights the user has to reproduce the data provided by the service."
+      },
+      "dataHandling": {
+        "type": "object",
+        "properties": {
+          "storageDuration": {
+            "type": "string",
+            "description": "Duration for which the data is stored by the provider."
+          },
+          "usagePolicy": {
+            "type": "string",
+            "description": "Policy describing how the data is used by the provider."
+          }
+        },
+        "required": ["storageDuration", "usagePolicy"],
+        "description": "Policies related to how the provider handles the data."
+      },
+      "performanceMetrics": {
+        "type": "object",
+        "properties": {
+          "accuracy": {
+            "type": "number",
+            "description": "The accuracy percentage of the provider's service."
+          },
+          "speed": {
+            "type": "string",
+            "description": "The average response time of the provider."
+          }
+        },
+        "description": "Metrics that indicate the performance of the provider's service."
+      },
+      "topicsSupported": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "List of topics the provider can handle."
+      },
+      "languagesSupported": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "List of languages the provider can handle."
+      },
+      "apiDocumentationUrl": {
+        "type": "string",
+        "format": "uri",
+        "description": "URL to the provider's API documentation."
+      },
+      "privacyPolicyUrl": {
+        "type": "string",
+        "format": "uri",
+        "description": "URL to the provider's privacy policy."
+      },
+      "termsOfServiceUrl": {
+        "type": "string",
+        "format": "uri",
+        "description": "URL to the provider's terms of service."
+      },
+      "supportContact": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email address for support inquiries."
+          },
+          "phone": {
+            "type": "string",
+            "description": "Phone number for support inquiries."
+          },
+          "chatUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL for support chat."
+          }
+        },
+        "description": "Contact information for support inquiries."
+      },
+      "sampleRequests": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "description": "Sample request object for the provider's API."
+        },
+        "description": "Examples of requests that can be made to the provider's API."
+      },
+      "sampleResponses": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "description": "Sample response object from the provider's API."
+        },
+        "description": "Examples of responses from the provider's API."
+      }
+    },
+    "required": [
+      "name",
+      "providerType",
+      "connectionType",
+      "config",
+      "supportedContentTypes",
+      "costPerRequest",
+      "copyrightOwnership",
+      "dataReproductionRights",
+      "dataHandling",
+      "performanceMetrics",
+      "topicsSupported",
+      "languagesSupported",
+      "apiDocumentationUrl",
+      "privacyPolicyUrl",
+      "termsOfServiceUrl",
+      "supportContact"
+    ],
+    "additionalProperties": false
+  }
+}

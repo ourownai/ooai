@@ -1,0 +1,220 @@
+# PII Masking Configuration
+#
+# This configuration file defines the rules and patterns for masking Personally Identifiable Information (PII)
+# in text data. The PII masking process helps protect sensitive information by replacing specific patterns
+# with masked values.
+#
+# The configuration is divided into different sections, each representing a specific type of PII:
+#
+# - `email`: Defines the pattern and masking rules for email addresses.
+# - `phone`: Defines the pattern and masking rules for phone numbers.
+# - `credit_card`: Defines the pattern and masking rules for credit card numbers.
+# - `ssn`: Defines the pattern and masking rules for Social Security Numbers (SSN).
+# - `ip_address`: Defines the pattern and masking rules for IP addresses.
+#
+# Each section contains the following fields:
+#
+# - `pattern`: A regular expression pattern that matches the specific PII type.
+# - `mask`: The masking rules for replacing the matched PII. It can include the following options:
+#   - `fixed`: Replaces the entire matched PII with a fixed string.
+#   - `partial`: Replaces a portion of the matched PII with a fixed string while preserving the remaining characters.
+#   - `random`: Replaces the matched PII with a randomly generated value of the same format.
+#
+# Example usage:
+#
+# ```rust
+# use pii_masking::mask_pii;
+#
+# let text = "My email is john@example.com and my phone number is 123-456-7890.";
+# let masked_text = mask_pii(text);
+# println!("{}", masked_text);
+# // Output: "My email is [EMAIL_MASKED] and my phone number is [PHONE_MASKED]."
+# ```
+#
+# Note: The PII masking process relies on regular expressions to identify and mask sensitive information.
+# Ensure that the regular expressions are carefully crafted to match the desired PII patterns accurately.
+#
+# For more information on using the PII masking functionality, refer to the documentation of the `pii_masking` module.
+
+email:
+  pattern: '\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+  mask:
+    fixed: '[EMAIL_MASKED]'
+
+phone:
+  pattern: '\b\d{3}[-.]?\d{3}[-.]?\d{4}\b'
+  mask:
+    partial: 'XXX-XXX-$1'
+
+credit_card:
+  pattern: '\b(?:\d{4}[-\s]?){3}\d{4}\b'
+  mask:
+    fixed: '[CREDIT_CARD_MASKED]'
+
+ssn:
+  pattern: '\b\d{3}[-\s]?\d{2}[-\s]?\d{4}\b'
+  mask:
+    partial: 'XXX-XX-$1'
+
+ip_address:
+  pattern: '\b(?:\d{1,3}\.){3}\d{1,3}\b'
+  mask:
+    random: '${1}.${2}.${3}.${4}'
+
+openapi: 3.0.0
+info:
+  title: PII Masking API
+  version: 1.0.0
+  description: API for masking and unmasking Personally Identifiable Information (PII)
+
+paths:
+  /msg/pii_mask:
+    get:
+      summary: Mask PII in a message
+      parameters:
+        - name: msg
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: sender_id
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:    
+              schema:
+                type: object
+                properties:
+                  masked_msg:
+                    type: string
+                  token:
+                    type: string
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /msg/apply_access:
+    get:
+      summary: Apply for access to masked message
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: sender_id
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: receiver_id
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  vc:
+                    type: string
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /msg/pii_unmask:
+    get:
+      summary: Unmask PII in a masked message
+      parameters:
+        - name: vc
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: masked_msg
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: sender_id
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: recipient_id
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

@@ -1,0 +1,603 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BigBot Data Exchange Documentation",
+  "type": "object",
+  "properties": {
+    "modules": [
+      {
+        "name": "replay_buffer",
+        "path": "src/buffers/replay_buffer.rs",
+        "description": "This module implements a replay buffer data structure (used in the reinforcement learning algorithms). It stores a fixed-size buffer of experiences, and when the buffer is full, new experiences are randomly added to replace older ones.",
+        "structs": [
+          {
+            "name": "ReplayBuffer",
+            "description": "The `ReplayBuffer` struct is a generic data structure that can be used to store any type of experience. It has a capacity parameter that specifies the maximum number of experiences that can be stored in the buffer.",
+            "methods": [
+              {
+                "name": "new",
+                "description": "Constructs a new `ReplayBuffer` instance with the specified capacity."
+              },
+              {
+                "name": "add",
+                "description": "Adds a new experience to the buffer. If the buffer is not yet full, the experience is appended to the end. Otherwise, a random experience in the buffer is replaced with the new one."
+              },
+              {
+                "name": "sample",
+                "description": "Retrieves a random subset of experiences from the buffer with the specified sample size."
+              },
+              {
+                "name": "len",
+                "description": "Returns the current number of experiences in the buffer."
+              },
+              {
+                "name": "is_full",
+                "description": "Returns a boolean indicating whether the buffer is full or not."
+              },
+              {
+                "name": "clear",
+                "description": "Clears the contents of the buffer."
+              }
+            ]
+          }
+        ],
+        "traits": [],
+        "enums": []
+      },
+      {
+        "name": "payment_buffer",
+        "path": "src/buffers/payment_buffer.rs",
+        "description": "This module provides functionality for compressing and processing payments on the Solana and Polkadot networks.",
+        "structs": [
+          {
+            "name": "CompressedPayment",
+            "description": "Represents a compressed payment containing a nonce and a vector of transactions."
+          },
+          {
+            "name": "SolanaPaymentProcessor",
+            "description": "A struct for compressing and processing payments on the Solana network.",
+            "methods": [
+              {
+                "name": "new",
+                "description": "Constructs a new `SolanaPaymentProcessor` instance with an empty `compressed_payments` map."
+              },
+              {
+                "name": "compress_payment",
+                "description": "Compresses a payment by adding a transaction to the `compressed_payments` map, using the nonce as the key."
+              },
+              {
+                "name": "process_compressed_payments",
+                "description": "Processes the compressed payments on the Solana network. This method is a placeholder and needs to be implemented with the actual logic for processing payments."
+              }
+            ]
+          },
+          {
+            "name": "PolkadotPaymentProcessor",
+            "description": "A struct for compressing and processing payments on the Polkadot network.",
+            "methods": [
+              {
+                "name": "new",
+                "description": "Constructs a new `PolkadotPaymentProcessor` instance with an empty `compressed_payments` map."
+              },
+              {
+                "name": "compress_payment",
+                "description": "Compresses a payment by adding a transaction to the `compressed_payments` map, using the nonce as the key."
+              },
+              {
+                "name": "process_compressed_payments",
+                "description": "Processes the compressed payments on the Polkadot network. This method is a placeholder and needs to be implemented with the actual logic for processing payments."
+              }
+            ]
+          }
+        ],
+        "traits": [],
+        "enums": []
+      },
+      {
+        "name": "base_agent",
+        "path": "src/agents/base_agent.rs",
+        "description": "The `Agent` struct encapsulates the state and decision-making logic of an agent within a reinforcement learning environment. It contains two primary fields: `state` and `q_table`.",
+        "structs": [
+          {
+            "name": "Agent",
+            "description": "The `Agent` struct encapsulates the state and decision-making logic of an agent within a reinforcement learning environment. It contains two primary fields: `state` and `q_table`.",
+            "methods": [
+              {
+                "name": "new",
+                "description": "The constructor method `new` for instantiating `Agent` objects. This method requires the number of states and actions as parameters to initialize the `q_table` with random values ranging between -0.5 and 0.5."
+              },
+              {
+                "name": "add_domain",
+                "description": "Adds a domain to the agent's domain list."
+              },
+              {
+                "name": "add_skill",
+                "description": "Adds a skill to the agent's skill list."
+              },
+              {
+                "name": "add_knowledge",
+                "description": "Adds a knowledge edge between two words in the agent's knowledge graph."
+              },
+              {
+                "name": "remove_domain",
+                "description": "Removes a domain from the agent's domain list."
+              },
+              {
+                "name": "remove_skill",
+                "description": "Removes a skill from the agent's skill list."
+              },
+              {
+                "name": "remove_knowledge",
+                "description": "Removes a knowledge edge between two words from the agent's knowledge graph."
+              },
+              {
+                "name": "has_domain",
+                "description": "Checks if the agent has a given domain."
+              }
+            ]
+          }
+        ],
+        "traits": [],
+        "enums": [
+          {
+            "name": "ProviderMetadata",
+            "description": "Represents metadata about a provider."
+          },
+          {
+            "name": "CostPerRequest",
+            "description": "Represents the cost per request for a provider."
+          },
+          {
+            "name": "DataHandling",
+            "description": "Represents data handling policies for a provider."
+          },
+          {
+            "name": "PerformanceMetrics",
+            "description": "Represents performance metrics for a provider."
+          }
+        ]
+      },
+      {
+        "name": "knowledge_agent",
+        "path": "src/agents/knowledge_agent.rs",
+        "description": "The `Agent` structure is central to managing knowledge graphs within specific domains. It represents an individual entity equipped with capabilities to construct, update, and interrogate knowledge graphs, which are composed of nodes representing concepts (words or phrases), with edges illustrating the relationships or dependencies among these concepts.",
+        "structs": [
+          {
+            "name": "Agent",
+            "description": "The `Agent` structure is central to managing knowledge graphs within specific domains. It represents an individual entity equipped with capabilities to construct, update, and interrogate knowledge graphs, which are composed of nodes representing concepts (words or phrases), with edges illustrating the relationships or dependencies among these concepts.",
+            "methods": [
+              {
+                "name": "new",
+                "description": "The constructor method `new` for instantiating `Agent` objects. This method initializes the agent with an empty state, an empty Q-table, an empty knowledge graph, and empty lists for domains, skills, and provider metadata."
+              },
+              {
+                "name": "add_domain",
+                "description": "Adds a domain to the agent's domain list."
+              },
+              {
+                "name": "add_skill",
+                "description": "Adds a skill to the agent's skill list."
+              },
+              {
+                "name": "add_knowledge",
+                "description": "Adds a knowledge edge between two words in the agent's knowledge graph."
+              },
+              {
+                "name": "remove_domain",
+                "description": "Removes a domain from the agent's domain list."
+              },
+              {
+                "name": "remove_skill",
+                "description": "Removes a skill from the agent's skill list."
+              },
+              {
+                "name": "remove_knowledge",
+                "description": "Removes a knowledge edge between two words from the agent's knowledge graph."
+              },
+              {
+                "name": "has_domain",
+                "description": "Checks if the agent has a given domain."
+              },
+              {
+                "name": "has_skill",
+                "description": "Checks if the agent has a given skill."
+              },
+              {
+                "name": "has_knowledge",
+                "description": "Checks if the agent has a given knowledge edge between two words."
+              },
+              {
+                "name": "get_domains",
+                "description": "Returns a vector of the agent's domains."
+              },
+              {
+                "name": "get_skills",
+                "description": "Returns a vector of the agent's skills."
+              },
+              {
+                "name": "get_knowledge",
+                "description": "Returns a vector of tuples representing the knowledge edges in the agent's knowledge graph."
+              },
+              {
+                "name": "merge",
+                "description": "Merges the domains, skills, knowledge graph, and provider metadata from another agent into the current agent."
+              },
+              {
+                "name": "clear",
+                "description": "Clears the agent's domains, skills, knowledge graph, and provider metadata."
+              },
+              {
+                "name": "to_json",
+                "description": "Serializes the agent's state to a JSON string."
+              },
+              {
+                "name": "from_json",
+                "description": "Deserializes an agent's state from a JSON string."
+              },
+              {
+                "name": "add_provider_metadata",
+                "description": "Adds provider metadata to the agent."
+              },
+              {
+                "name": "remove_provider_metadata",
+                "description": "Removes provider metadata from the agent by name."
+              },
+              {
+                "name": "get_provider_metadata",
+                "description": "Retrieves provider metadata from the agent by name."
+              },
+              {
+                "name": "build_knowledge_graph",
+                "description": "Builds a knowledge graph from a given text by parsing the text and creating nodes and edges in the knowledge graph."
+              },
+              {
+                "name": "update_knowledge_graph",
+                "description": "Updates the knowledge graph with new information from a given text by adding new nodes and edges to the existing knowledge graph."
+              },
+              {
+                "name": "search",
+                "description": "Searches the knowledge graph for nodes containing a given query string and returns a vector of matching node names."
+              },
+              {
+                "name": "summarise",
+                "description": "Generates a summary of the knowledge graph by concatenating the node names and their dependencies into a string."
+              }
+            ]
+          }
+        ],
+        "traits": [],
+        "enums": [
+          {
+            "name": "ProviderMetadata",
+            "description": "Represents metadata about a provider, including the provider's name, type, supported content types, cost per request, copyright ownership, data reproduction rights, data handling policies, and performance metrics."
+          },
+          {
+            "name": "CostPerRequest",
+            "description": "Represents the cost per request for a provider, including the amount and currency."
+          },
+          {
+            "name": "DataHandling",
+            "description": "Represents data handling policies for a provider, including storage duration and usage policy."
+          },
+          {
+            "name": "PerformanceMetrics",
+            "description": "Represents performance metrics for a provider, including accuracy and speed."
+          }
+        ]
+      },
+      {
+        "name": "q_learning_agent",
+        "path": "src/agents/q_learning_agent.rs",
+        "description": "A reinforcement learning agent using the Q-learning algorithm. The `QLearningAgent` struct is designed to learn optimal policies for decision-making within a specified environment. It encapsulates an `Agent` instance that maintains the agent's current state and the action-value function (Q-table).",
+        "structs": [
+          {
+            "name": "QLearningAgent",
+            "description": "The `QLearningAgent` struct encapsulates an `Agent` instance that maintains the agent's current state and the action-value function (Q-table). It also includes fields for hyperparameters such as the discount factor, learning rate, exploration rate, batch size, replay buffer, eligibility traces, and softmax temperature.",
+            "fields": [
+              {"name": "agent", "description": "An instance of `Agent` that holds the state and Q-table."},
+              {"name": "gamma", "description": "The discount factor for future rewards."},
+              {"name": "learning_rate", "description": "The rate at which the agent incorporates new information."},
+              {"name": "exploration_rate", "description": "The probability of selecting a random action for exploration."},
+              {"name": "batch_size", "description": "The number of experiences to sample from the replay buffer when updating."},
+              {"name": "replay_buffer", "description": "A binary heap of `Experience` structs for experience replay."},
+              {"name": "eligibility_traces", "description": "A 2D vector for applying updates across state-action pairs."},
+              {"name": "softmax_temp", "description": "The temperature parameter for the softmax action selection policy."}
+            ],
+            "methods": [
+              {"name": "new", "description": "Initializes a new `QLearningAgent` with specified hyperparameters."},
+              {"name": "choose_action", "description": "Selects an action from a given state using a softmax probability distribution."},
+              {"name": "update_q_values", "description": "Updates the Q-table using a batch of experiences from the replay buffer."},
+              {"name": "add_experience", "description": "Add an experience to the replay buffer with a simple priority scheme based on the absolute reward."},
+              {"name": "update_exploration_rate", "description": "Dynamically adjust the exploration rate based on the number of iterations, encouraging exploration early on and exploitation later."},
+              {"name": "save_q_table", "description": "Save the current Q-table to a file."},
+              {"name": "load_q_table", "description": "Load a Q-table from a file, updating the agent's knowledge."},
+              {"name": "reset_state", "description": "Reset the agent's current state, allowing for a fresh start or setting a specific initial state."}
+            ]
+          },
+          {
+            "name": "Experience",
+            "description": "A struct to represent an experience in the replay buffer, including state, action taken, reward received, next state, and a priority for sampling."
+          }
+        ],
+        "traits": [],
+        "enums": []
+      },
+      {
+        "name": "jwk",
+        "path": "src/api/jwk.rs",
+        "description": "This module provides an API for managing JSON Web Keys (JWKs) used for authentication and authorization purposes.",
+        "structs": [
+          {"name": "AddJwkReq", "description": "A struct representing the request body for adding a new JWK."},
+          {"name": "UpdateJwkReq", "description": "A struct representing the request body for updating an existing JWK."}
+        ],
+        "traits": [],
+        "enums": [],
+        "functions": [
+          {"name": "jwks", "description": "A GET endpoint that returns a list of all JWKs in the system."},
+          {"name": "get_jwk", "description": "A GET endpoint that retrieves a specific JWK by its key ID."},
+          {"name": "add_jwk", "description": "A POST endpoint that adds a new JWK to the system."},
+          {"name": "update_jwk", "description": "A PUT endpoint that updates an existing JWK by its key ID."}
+        ]
+      },
+      {
+        "name": "msg",
+        "path": "src/api/msg.rs",
+        "description": "This module provides an API for handling personal identifiable information (PII) in messages.",
+        "structs": [
+          {"name": "PIIMaskReq", "description": "A struct representing the request body for masking PII in a message."}
+        ],
+        "traits": [],
+        "enums": [],
+        "functions": [
+          {"name": "pii_mask", "description": "A GET endpoint that masks PII in a given message."},
+          {"name": "apply_access", "description": "A GET endpoint that applies for access to a masked message."},
+          {"name": "pii_unmask", "description": "A GET endpoint that unmasks a message using a provided verification credential (VC)."}
+        ]
+      },
+      {
+        "name": "bigbot",
+        "path": "src/bin/bigbot.rs",
+        "description": "The main entry point of the BigBot application, responsible for setting up and running the HTTP server.",
+        "structs": [
+          {"name": "ServerConfig", "description": "Represents the configuration for the server, including the host and port."}
+        ],
+        "traits": [],
+        "enums": [
+          {"name": "BigbotError", "description": "An enum representing custom errors that can occur in the BigBot application."}
+        ],
+        "functions": [
+          {"name": "main", "description": "The main entry point of the application, responsible for initializing the PostgreSQL client, loading the server configuration, setting up the logger, and starting the HTTP server."},
+          {"name": "configure_routes", "description": "Configures the routes for the HTTP server, defining the available endpoints."},
+          {"name": "setup_logger", "description": "Sets up the logger configuration for the application."}
+        ]
+      },
+      {
+        "name": "bokeh_bindings",
+        "path": "src/bindings/bokeh_bindings.rs",
+        "description": "This module provides bindings to the Bokeh library for data visualization in Python.",
+        "structs": [],
+        "traits": [],
+        "enums": [],
+        "functions": [
+          {"name": "my_rust_function", "description": "A Rust function that returns a string 'Hello, world!'."},
+          {"name": "plot_figure", "description": "Plots a simple Bokeh figure based on the provided data, chart type, and chart configuration."},
+          {"name": "find_group", "description": "Finds unique groups in a list of dictionaries based on a given key and sorts them."},
+          {"name": "group_by", "description": "Groups a list of dictionaries by a given key and returns a list of lists, where each inner list contains dictionaries belonging to the same group."},
+          {"name": "ticker", "description": "Formats a floating-point number as a string with a fixed decimal precision."},
+          {"name": "group_commons", "description": "Not yet implemented."},
+          {"name": "array_count", "description": "Returns a list of lengths of the inner lists in a list of lists."},
+          {"name": "array_sum", "description": "Returns a list of lengths of the inner lists in a list of lists."},
+          {"name": "array_average", "description": "Returns a list of lengths of the inner lists in a list of lists."},
+          {"name": "linear_scale_mixin", "description": "Scales a list of integers by a given factor and optionally replaces the original values with scaled values."}
+        ]
+      },
+      {
+        "name": "bokeh_charts",
+        "path": "src/bindings/bokeh_charts.rs",
+        "description": "This module provides functionality for creating and rendering Bokeh charts.",
+        "structs": [
+          {"name": "Item", "description": "Represents an item for a chart, containing information about the block size and graph type."},
+          {"name": "ChartPlot", "description": "Represents a chart plot, containing the plot type and data."}
+        ],
+        "traits": [],
+        "enums": [],
+        "functions": [
+          {"name": "compute_bokeh_chart", "description": "Computes and generates a Bokeh chart based on a list of items and data."},
+          {"name": "append_chart_plot", "description": "Appends a chart plot to an item based on the graph type and data."}
+        ]
+      },
+      {
+        "name": "rust_django_extensor",
+        "path": "src/bindings/rust_django_extensor.rs",
+        "description": "This module leverages the capabilities of the `pyo3` and `tokio` crates to facilitate the integration of Rust's powerful asynchronous runtime with Python. It accomplishes this by providing a Python module that exposes a wrapped Tokio runtime, enabling Python code to execute asynchronous tasks efficiently.",
+        "structs": [
+          {"name": "RustTokioRuntime", "description": "The `RustTokioRuntime` struct encapsulates a Tokio `Runtime` object and provides methods for interacting with the runtime from Python."}
+        ],
+        "traits": [],
+        "enums": [
+          {"name": "ExtensionError", "description": "Custom error type for the extension."}
+        ],
+        "functions": []
+      },
+      {
+        "name": "spacy_bindings",
+        "path": "src/bindings/spacy_bindings.rs",
+        "description": "This module provides bindings to the spaCy library for natural language processing in Python.",
+        "structs": [],
+        "traits": [],
+        "enums": [],
+        "functions": [
+          {"name": "load_spacy_model", "description": "Loads a spaCy language model from a specified path."},
+          {"name": "spacy_tokenize", "description": "Tokenizes a given text using the loaded spaCy model."},
+          {"name": "spacy_pos_tag", "description": "Performs part-of-speech tagging on a given list of tokens using the loaded spaCy model."},
+          {"name": "spacy_ner", "description": "Performs named entity recognition on a given list of tokens using the loaded spaCy model."},
+          {"name": "spacy_dependency_parse", "description": "Performs dependency parsing on a given list of tokens using the loaded spaCy model."},
+          {"name": "spacy_custom_operation", "description": "Executes a custom operation on a given text using the loaded spaCy model."},
+          {"name": "spacy_visualize_entities", "description": "Visualizes named entities in a given text using the loaded spaCy model."}
+        ]
+      },
+      {
+        "name": "kv",
+        "path": "src/clients/kv.rs",
+        "description": "This module provides a key-value store interface and implementations for various storage backends.",
+        "structs": [
+          {
+            "name": "PrefixedKVStore",
+            "description": "A struct that wraps another KVStore and adds a prefix to all keys."
+          },
+          {
+            "name": "MemoryKVStore",
+            "description": "An in-memory implementation of the KVStore trait for testing purposes."
+          }
+        ],
+        "traits": [
+          {
+            "name": "KVStore",
+            "description": "A trait defining the interface for a key-value store."
+          }
+        ],
+        "enums": [
+          {
+            "name": "BigbotError",
+            "description": "An enum representing custom errors that can occur in the key-value store."
+          }
+        ]
+      },
+      {
+        "name": "neo4j",
+        "path": "src/clients/neo4j.rs",
+        "description": "This module provides functions for creating Neo4j client connections.",
+        "structs": [],
+        "traits": [],
+        "enums": [],
+        "functions": [
+          {
+            "name": "new_neo4j_client",
+            "description": "Creates a new Neo4j client connection with the provided URI, username, and password."
+          },
+          {
+            "name": "new_neo4j_client_from_env",
+            "description": "Creates a new Neo4j client connection using environment variables for the URI, username, and password."
+          }
+        ]
+      },
+      {
+        "name": "postgres",
+        "path": "src/clients/postgres.rs",
+        "description": "This module provides functions for creating PostgreSQL client connections.",
+        "structs": [],
+        "traits": [],
+        "enums": [],
+        "functions": [
+          {
+            "name": "new_postgres_client",
+            "description": "Creates a new PostgreSQL client connection with the provided connection string."
+          },
+          {
+            "name": "new_postgres_client_from_env",
+            "description": "Creates a new PostgreSQL client connection using the connection string from an environment variable."
+          }
+        ]
+      },
+      {
+        "name": "constants",
+        "path": "src/commons/constants.rs",
+        "description": "This module defines constants and enums used throughout the application.",
+        "structs": [],
+        "traits": [],
+        "enums": [
+          {
+            "name": "Classification",
+            "description": "An enum representing different types of classifications for data exchange."
+          }
+        ],
+        "functions": [],
+        "constants": [
+          {
+            "name": "MQTT_CLS",
+            "description": "A constant string representing the MQTT classification."
+          },
+          {
+            "name": "KAFKA_CLS",
+            "description": "A constant string representing the Kafka classification."
+          },
+          {
+            "name": "REST_CLS",
+            "description": "A constant string representing the REST classification."
+          },
+          {
+            "name": "GRPC_CLS",
+            "description": "A constant string representing the gRPC classification."
+          },
+          {
+            "name": "WEBHOOK_CLS",
+            "description": "A constant string representing the Webhook classification."
+          },
+          {
+            "name": "INFERENCE_TOPIC_PREFIX",
+            "description": "A constant string representing the prefix for inference topics."
+          }
+        ]
+      },
+      {
+        "name": "waiter",
+        "path": "src/commons/waiter.rs",
+        "description": "This module provides utility functions for waiting and retrying operations.",
+        "structs": [
+          {
+            "name": "Waiter",
+            "description": "A struct that represents a waiter for a specific service.",
+            "fields": [
+              {
+                "name": "connection_string",
+                "type": "String",
+                "description": "The connection string for the service."
+              },
+              {
+                "name": "max_retries",
+                "type": "u32",
+                "description": "The maximum number of retries."
+              },
+              {
+                "name": "retry_delay",
+                "type": "Duration",
+                "description": "The delay between each retry."
+              }
+            ]
+          }
+        ],
+        "traits": [],
+        "enums": [
+          {
+            "name": "WaiterError",
+            "description": "An enum representing the possible errors that can occur while waiting for a service.",
+            "variants": [
+              {
+                "name": "ConnectionError",
+                "description": "Represents an error that occurred while connecting to the service."
+              },
+              {
+                "name": "TimeoutError",
+                "description": "Represents an error that occurred due to a timeout while waiting for the service."
+              }
+            ]
+          }
+        ],
+        "functions": [
+          {
+            "name": "wait_for_postgres",
+            "description": "Waits for a PostgreSQL server to be available at the specified connection string, with a maximum number of retries and a delay between each retry."
+          },
+          {
+            "name": "wait_for_neo4j",
+            "description": "Waits for a Neo4j server to be available at the specified connection string, with a maximum number of retries and a delay between each retry."
+          }
+        ]
+      }
+      
+      
+      
+      
+      
+    ]
+  }
+}

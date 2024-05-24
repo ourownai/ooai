@@ -1,0 +1,307 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Rasa Workflow Builder Schema",
+  "description": "A JSON schema for a workflow builder based on the vue-flow library to train a Rasa model.",
+  "type": "object",
+  "properties": {
+    "language": {
+      "type": "string",
+      "description": "The language of the training data."
+    },
+    "domain": {
+      "type": "object",
+      "properties": {
+        "intents": {
+          "type": "array",
+          "description": "List of intents used in the model.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entities": {
+          "type": "array",
+          "description": "List of entities used in the model.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "slots": {
+          "type": "object",
+          "description": "Slot definitions for the model.",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "The type of the slot."
+              },
+              "initial_value": {
+                "type": ["string", "number", "boolean", "null"],
+                "description": "The initial value of the slot."
+              },
+              "auto_fill": {
+                "type": "boolean",
+                "description": "Whether the slot should be auto-filled by the NLU model."
+              },
+              "influence_conversation": {
+                "type": "boolean",
+                "description": "Whether the slot should influence the conversation flow."
+              }
+            },
+            "required": ["type"]
+          }
+        },
+        "responses": {
+          "type": "object",
+          "description": "Response templates for the model.",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "description": "The text of the response template."
+                },
+                "buttons": {
+                  "type": "array",
+                  "description": "Buttons for the response template.",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "type": "string",
+                        "description": "The title of the button."
+                      },
+                      "payload": {
+                        "type": "string",
+                        "description": "The payload sent when the button is clicked."
+                      }
+                    },
+                    "required": ["title", "payload"]
+                  }
+                },
+                "image": {
+                  "type": "string",
+                  "description": "The URL of an image for the response template."
+                },
+                "custom": {
+                  "type": "object",
+                  "description": "Custom properties for the response template.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        },
+        "actions": {
+          "type": "array",
+          "description": "List of custom actions used in the model.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "forms": {
+          "type": "object",
+          "description": "Form definitions for the model.",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "required_slots": {
+                "type": "object",
+                "description": "The required slots for the form.",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "description": "The type of slot filling mechanism."
+                    },
+                    "details": {
+                      "type": "object",
+                      "description": "The details of the slot filling mechanism.",
+                      "additionalProperties": true
+                    }
+                  },
+                  "required": ["type"]
+                }
+              },
+              "slot_mappings": {
+                "type": "object",
+                "description": "The mapping of slots to entities, intents, or triggers.",
+                "additionalProperties": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "The type of mapping."
+                      },
+                      "details": {
+                        "type": "object",
+                        "description": "The details of the mapping.",
+                        "additionalProperties": true
+                      }
+                    },
+                    "required": ["type"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": ["intents", "entities", "slots", "responses", "actions", "forms"]
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "rasa_nlu_data": {
+          "type": "object",
+          "properties": {
+            "common_examples": {
+              "type": "array",
+              "description": "The training examples for the NLU model.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "The text of the training example."
+                  },
+                  "intent": {
+                    "type": "string",
+                    "description": "The intent associated with the training example."
+                  },
+                  "entities": {
+                    "type": "array",
+                    "description": "Entities present in the training example.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "start": {
+                          "type": "integer",
+                          "description": "The start index of the entity in the text."
+                        },
+                        "end": {
+                          "type": "integer",
+                          "description": "The end index of the entity in the text."
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "The entity value."
+                        },
+                        "entity": {
+                          "type": "string",
+                          "description": "The entity type."
+                        }
+                      },
+                      "required": ["start", "end", "value", "entity"]
+                    }
+                  }
+                },
+                "required": ["text", "intent"]
+              }
+            },
+            "regex_features": {...},
+            "lookup_tables": {...},
+            "entity_synonyms": {...}
+          },
+          "required": ["common_examples"]
+        },
+        "rasa_core_data": {
+          "type": "object",
+          "properties": {
+            "rules": {
+              "type": "array",
+              "description": "The rules for the conversation.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "rule": {
+                    "type": "string",
+                    "description": "The name of the rule."
+                  },
+                  "steps": {
+                    "type": "array",
+                    "description": "The steps in the rule.",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  }
+                },
+                "required": ["rule", "steps"]
+              }
+            },
+            "stories": {
+              "type": "array",
+              "description": "The stories for the conversation.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "story": {
+                    "type": "string",
+                    "description": "The name of the story."
+                  },
+                  "steps": {
+                    "type": "array",
+                    "description": "The steps in the story.",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  }
+                },
+                "required": ["story", "steps"]
+              }
+            }
+          },
+          "required": ["rules", "stories"]
+        }
+      },
+      "required": ["rasa_nlu_data", "rasa_core_data"]
+    },
+    "pipeline": {
+      "type": "array",
+      "description": "The NLU pipeline configuration.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the pipeline component."
+          },
+          "parameters": {
+            "type": "object",
+            "description": "The parameters for the pipeline component.",
+            "additionalProperties": true
+          }
+        },
+        "required": ["name"]
+      }
+    },
+
+    "policies": {
+      "type": "array",
+      "description": "The policy configuration for dialogue management.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the policy."
+          },
+          "parameters": {
+            "type": "object",
+            "description": "The parameters for the policy.",
+            "additionalProperties": true
+          }
+        },
+        "required": ["name"]
+      }
+    }
+  },
+  "required": ["language", "domain", "data", "pipeline", "policies"]
+}

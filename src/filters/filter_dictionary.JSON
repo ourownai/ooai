@@ -1,0 +1,16 @@
+{
+  "phrases": [
+    {
+      "text": "personal information",
+      "score": 0.8
+    },
+    {
+      "text": "password",
+      "score": 0.9
+    },
+    {
+      "text": "credit card",
+      "score": 0.7
+    }
+  ]
+}

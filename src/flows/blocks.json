@@ -1,0 +1,308 @@
+{
+  "InputBlock": {
+    "methods": {
+      "on_process": {
+        "args": ["state", "input"],
+        "return": {
+          "type": "BlockResult",
+          "value": "Reject"
+        }
+      },
+      "process": {
+        "args": ["state", "input"],
+        "body": [
+          {
+            "type": "ConditionalStatement",
+            "condition": {
+              "type": "BinaryExpression",
+              "operator": "&&",
+              "left": {
+                "type": "UnaryExpression",
+                "operator": "!",
+                "argument": {
+                  "type": "CallExpression",
+                  "callee": "self.get_property",
+                  "arguments": ["required"]
+                }
+              },
+              "right": {
+                "type": "BinaryExpression",
+                "operator": "==",
+                "left": "input",
+                "right": {
+                  "type": "NullLiteral"
+                }
+              }
+            },
+            "consequent": [
+              {
+                "type": "CallExpression",
+                "callee": "self.save",
+                "arguments": ["state", null]
+              },
+              {
+                "type": "ReturnStatement",
+                "argument": {
+                  "type": "CallExpression",
+                  "callee": "self.move",
+                  "arguments": []
+                }
+              }
+            ]
+          },
+          {
+            "type": "ReturnStatement",
+            "argument": {
+              "type": "CallExpression",
+              "callee": "self.on_process",
+              "arguments": ["state", "input"]
+            }
+          }
+        ]
+      },
+      "get_connections": {
+        "args": ["properties"],
+        "return": [
+          ["BLOCK_MOVE", "Next"],
+          ["BLOCK_REJECT", "Reject"]
+        ]
+      },
+      "save": {
+        "args": ["state", "value"],
+        "body": [
+          {
+            "type": "VariableDeclaration",
+            "declarations": [
+              {
+                "type": "VariableDeclarator",
+                "id": "key",
+                "init": {
+                  "type": "CallExpression",
+                  "callee": "self.get_property",
+                  "arguments": ["key"]
+                }
+              }
+            ]
+          },
+          {
+            "type": "AssignmentExpression",
+            "operator": "=",
+            "left": {
+              "type": "MemberExpression",
+              "object": "state",
+              "property": "key"
+            },
+            "right": "value"
+          }
+        ]
+      },
+      "load": {
+        "args": ["state"],
+        "body": [
+          {
+            "type": "VariableDeclaration",
+            "declarations": [
+              {
+                "type": "VariableDeclarator",
+                "id": "key",
+                "init": {
+                  "type": "CallExpression",
+                  "callee": "self.get_property",
+                  "arguments": ["key"]
+                }
+              }
+            ]
+          },
+          {
+            "type": "ReturnStatement",
+            "argument": {
+              "type": "MemberExpression",
+              "object": "state",
+              "property": "key"
+            }
+          }
+        ],
+        "return": {
+          "type": "MemberExpression",
+          "object": "state",
+          "property": "key"
+        }
+      },
+      "load_template": {
+        "body": [
+          {
+            "type": "CallExpression",
+            "callee": "self.add_template_property",
+            "arguments": [
+              "key",
+              "string",
+              "text",
+              {
+                "required": true,
+                "unique": true,
+                "auto": true,
+                "description": "Key used to store the data"
+              }
+            ]
+          },
+          {
+            "type": "CallExpression",
+            "callee": "self.add_template_property",
+            "arguments": [
+              "prompt",
+              "string",
+              "text",
+              {
+                "required": false,
+                "auto": true,
+                "description": "Display text before processing block"
+              }
+            ]
+          },
+          {
+            "type": "CallExpression",
+            "callee": "self.add_template_property",
+            "arguments": [
+              "required",
+              "boolean",
+              "checkbox",
+              {
+                "required": true,
+                "description": "If set to false this property becomes optional.",
+                "value": false
+              }
+            ]
+          }
+        ]
+      },
+      "on_search": {
+        "args": ["query"],
+        "body": [
+          {
+            "type": "VariableDeclaration",
+            "declarations": [
+              {
+                "type": "VariableDeclarator",
+                "id": "required",
+                "init": {
+                  "type": "CallExpression",
+                  "callee": "self.get_property",
+                  "arguments": ["required"]
+                }
+              }
+            ]
+          },
+          {
+            "type": "ConditionalStatement",
+            "condition": {
+              "type": "LogicalExpression",
+              "operator": "&&",
+              "left": {
+                "type": "BinaryExpression",
+                "operator": "!=",
+                "left": "required",
+                "right": null
+              },
+              "right": {
+                "type": "UnaryExpression",
+                "operator": "!",
+                "argument": "required"
+              }
+            },
+            "consequent": [
+              {
+                "type": "VariableDeclaration",
+                "declarations": [
+                  {
+                    "type": "VariableDeclarator",
+                    "id": "resources",
+                    "init": {
+                      "type": "CallExpression",
+                      "callee": "super().on_search",
+                      "arguments": ["query"]
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "CallExpression",
+                "callee": "resources.append",
+                "arguments": [
+                  {
+                    "type": "CallExpression",
+                    "callee": "SearchNode.wrap_skip",
+                    "arguments": []
+                  }
+                ]
+              },
+              {
+                "type": "ReturnStatement",
+                "argument": "resources"
+              }
+            ]
+          },
+          {
+            "type": "ReturnStatement",
+            "argument": {
+              "type": "CallExpression",
+              "callee": "super().on_search",
+              "arguments": ["query"]
+            }
+          }
+        ]
+      }
+    },
+    "api_integration": {
+      "endpoint": "https://api.example.com/input",
+      "request_format": {
+        "method": "POST",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "key": "{{key}}",
+          "value": "{{value}}"
+        }
+      },
+      "response_format": {
+        "success": {
+          "status_code": 200,
+          "body": {
+            "message": "Input saved successfully"
+          }
+        },
+        "error": {
+          "status_code": 400,
+          "body": {
+            "error": "Invalid input"
+          }
+        }
+      },
+      "authentication": {
+        "type": "bearer_token",
+        "token": "{{api_token}}"
+      }
+    },
+    "parameters_schema": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "Key used to store the data"
+        },
+        "prompt": {
+          "type": "string",
+          "description": "Display text before processing block"
+        },
+        "required": {
+          "type": "boolean",
+          "description": "If set to false this property becomes optional"
+        }
+      },
+      "required": [
+        "key",
+        "required"
+      ]
+    }
+  }
+}

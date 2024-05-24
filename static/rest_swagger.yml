@@ -1,0 +1,44 @@
+openapi: 3.0.0
+info:
+  title: Rust Application API
+  version: 1.0.0
+paths:
+  /endpoint:
+    get:
+      summary: Call the endpoint with specified parameters
+      parameters:
+        - name: operator_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: package
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: data
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: kwargs
+          in: query
+          required: false
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '400':
+          description: Bad request
+        '500':
+          description: Internal Server Error

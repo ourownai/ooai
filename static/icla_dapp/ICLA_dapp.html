@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ICLA Acceptance dApp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@solana/spl-token@latest/lib/index.iife.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f5f5f5;
+      transition: background-color 0.3s;
+    }
+
+    .container {
+      max-width: 400px;
+      width: 100%;
+      padding: 40px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+      transition: color 0.3s;
+    }
+
+    .icla-text {
+      margin-bottom: 30px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    .icla-text h2 {
+      color: #333;
+      margin-bottom: 10px;
+      transition: color 0.3s;
+    }
+
+    .icla-text p {
+      color: #666;
+      line-height: 1.6;
+      transition: color 0.3s;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #333;
+      transition: color 0.3s;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+
+    .form-group button {
+      padding: 10px 20px;
+      background-color: #008080;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .form-group button:hover {
+      background-color: #006666;
+      transform: translateY(-2px);
+    }
+
+    .form-group button:active {
+      transform: translateY(0);
+    }
+
+    .qr-code {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .qr-code h3 {
+      color: #333;
+      margin-bottom: 10px;
+      transition: color 0.3s;
+    }
+
+    .qr-code canvas {
+      display: inline-block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 30px;
+      padding: 10px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .success-message {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .error-message {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    .loading-spinner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 30px;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #008080;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background-color: #111;
+    }
+
+    .dark-mode .container {
+      background-color: #222;
+    }
+
+    .dark-mode h1,
+    .dark-mode .icla-text h2,
+    .dark-mode .form-group label,
+    .dark-mode .qr-code h3 {
+      color: #fff;
+    }
+
+    .dark-mode .icla-text {
+      background-color: #333;
+    }
+
+    .dark-mode .icla-text p {
+      color: #ccc;
+    }
+
+    .dark-mode .form-group input {
+      background-color: #333;
+      color: #fff;
+      border-color: #444;
+    }
+
+    .dark-mode .form-group button {
+      background-color: #00ffff;
+      color: #000;
+    }
+
+    .dark-mode .form-group button:hover {
+      background-color: #00cccc;
+    }
+
+    .dark-mode .spinner {
+      border-top-color: #00ffff;
+    }
+
+    /* Media Queries */
+    @media screen and (max-width: 600px) {
+      .container {
+        max-width: 100%;
+        border-radius: 0;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ICLA Acceptance</h1>
+    <div class="icla-text">
+      <h2>Individual Contributor License Agreement (ICLA)</h2>
+      <p>By signing this agreement, you agree to the terms and conditions outlined in the ICLA.</p>
+      <!-- Add the complete ICLA text here -->
+    </div>
+    <form id="icla-form">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">GitHub-linked Email:</label>
+        <input type="email" id="email" required>
+      </div>
+      <div class="form-group">
+        <button type="submit">Sign ICLA</button>
+      </div>
+    </form>
+    <div class="loading-spinner" style="display: none;">
+      <div class="spinner"></div>
+    </div>
+    <div class="qr-code" style="display: none;">
+      <h3>Scan the QR code to complete the token transfer:</h3>
+      <canvas id="qr-code-canvas"></canvas>
+    </div>
+    <div class="message success-message" style="display: none;">
+      ICLA acceptance recorded successfully!
+    </div>
+    <div class="message error-message" style="display: none;">
+      An error occurred. Please try again.
+    </div>
+  </div>
+  <script>
+    // Connect to the Solana blockchain
+    const connection = new solanaWeb3.Connection('https://api.mainnet-beta.solana.com');
+
+    // Function to handle ICLA form submission
+    async function handleSubmit(event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+
+      // Show loading spinner
+      const loadingSpinner = document.querySelector('.loading-spinner');
+      loadingSpinner.style.display = 'flex';
+
+      try {
+        // Generate unique identifier for ICLA acceptance
+        const timestamp = Date.now();
+        const contributorId = `${name}-${email}-${timestamp}`;
+
+        // Create a new ICLAAcceptance account on the Solana blockchain
+        const iclaAcceptanceAccount = new solanaWeb3.Account();
+        const iclaVersion = '1.0'; // Replace with the actual ICLA version
+        const ipfsHash = 'QmXyz...'; // Replace with the actual IPFS hash of the ICLA
+
+        const transaction = new solanaWeb3.Transaction().add(
+          // Add the necessary instructions to create the ICLAAcceptance account
+          // and record the ICLA acceptance on the blockchain
+          // using the `add_contributor` function
+          solanaWeb3.SystemProgram.createAccount({
+            fromPubkey: solanaWeb3.SYSVAR_RENT_PUBKEY,
+            newAccountPubkey: iclaAcceptanceAccount.publicKey,
+            space: ICLAAcceptance.size,
+            lamports: await connection.getMinimumBalanceForRentExemption(ICLAAcceptance.size),
+            programId: new solanaWeb3.PublicKey('your_program_id_here'),
+          }),
+          new solanaWeb3.TransactionInstruction({
+            keys: [
+              { pubkey: iclaAcceptanceAccount.publicKey, isSigner: false, isWritable: true },
+              { pubkey: solanaWeb3.SYSVAR_RENT_PUBKEY, isSigner: false, isWritable: false },
+            ],
+            programId: new solanaWeb3.PublicKey('your_program_id_here'),
+            data: Buffer.from(Uint8Array.of(0, ...new TextEncoder().encode(contributorId), ...new TextEncoder().encode(iclaVersion), ...new TextEncoder().encode(ipfsHash))),
+          })
+        );
+
+        // Sign and send the transaction
+        await solanaWeb3.sendAndConfirmTransaction(connection, transaction, [iclaAcceptanceAccount]);
+
+        // Display the QR code for SPL token transfer
+        const qrCodeElement = document.querySelector('.qr-code');
+        qrCodeElement.style.display = 'block';
+
+        // Generate and display the QR code using a QR code library
+        const qrCodeCanvas = document.getElementById('qr-code-canvas');
+        const refundableAmount = 1000000; // Adjust the amount as needed
+        const tokenTransferUrl = `solana:${iclaAcceptanceAccount.publicKey.toBase58()}?amount=${refundableAmount}`;
+        await QRCode.toCanvas(qrCodeCanvas, tokenTransferUrl);
+
+        // Listen for the SPL token transfer confirmation
+        const transferConfirmation = await listenForTransferConfirmation(iclaAcceptanceAccount.publicKey, refundableAmount);
+        if (transferConfirmation) {
+          // Record the ICLA acceptance on the blockchain
+          const recordTransaction = new solanaWeb3.Transaction().add(
+            // Add the necessary instructions to record the ICLA acceptance
+            // using the `add_contributor` function
+            new solanaWeb3.TransactionInstruction({
+              keys: [
+                { pubkey: iclaAcceptanceAccount.publicKey, isSigner: false, isWritable: true },
+              ],
+              programId: new solanaWeb3.PublicKey('your_program_id_here'),
+              data: Buffer.from(Uint8Array.of(1)),
+            })
+          );
+          await solanaWeb3.sendAndConfirmTransaction(connection, recordTransaction, [iclaAcceptanceAccount]);
+
+          // Display the success message
+          const successMessage = document.querySelector('.success-message');
+          successMessage.style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        // Display the error message
+        const errorMessage = document.querySelector('.error-message');
+        errorMessage.style.display = 'block';
+      } finally {
+        // Hide loading spinner
+        loadingSpinner.style.display = 'none';
+      }
+    }
+
+    // Function to listen for SPL token transfer confirmation
+    async function listenForTransferConfirmation(contributorPublicKey, refundableAmount) {
+      // Listen for the SPL token transfer to the specified contributor public key
+      // and check if the transferred amount matches the refundable amount
+      const tokenAccount = await splToken.getAssociatedTokenAddress(
+        splToken.NATIVE_MINT,
+        contributorPublicKey
+      );
+
+      const accountInfo = await connection.getAccountInfo(tokenAccount);
+      if (accountInfo !== null) {
+        const tokenAmount = splToken.AccountLayout.decode(accountInfo.data).amount;
+        if (tokenAmount >= refundableAmount) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    // Attach event listener to the ICLA form submission
+    document.getElementById('icla-form').addEventListener('submit', handleSubmit);
+
+    // Dark Mode Toggle
+    const darkModeToggle = document.createElement('button');
+    darkModeToggle.textContent = 'Toggle Dark Mode';
+    darkModeToggle.style.position = 'fixed';
+    darkModeToggle.style.top = '10px';
+    darkModeToggle.style.right = '10px';
+    darkModeToggle.style.padding = '10px';
+    darkModeToggle.style.backgroundColor = '#008080';
+    darkModeToggle.style.color = '#fff';
+    darkModeToggle.style.border = 'none';
+    darkModeToggle.style.borderRadius = '4px';
+    darkModeToggle.style.cursor = 'pointer';
+    document.body.appendChild(darkModeToggle);
+
+    darkModeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+    });
+  </script>
+</body>
+</html>

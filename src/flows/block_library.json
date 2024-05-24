@@ -1,0 +1,180 @@
+{
+  "blocks": [
+    {
+      "id": "oauth_provider",
+      "type": "OAuthProvider",
+      "properties": {
+        "auth_url": "{{auth_url}}",
+        "token_url": "{{token_url}}",
+        "client_id": "{{client_id}}",
+        "client_secret": "{{client_secret}}",
+        "scope": []
+      },
+      "methods": {
+        "authorization_url": {
+          "args": ["redirect_uri", "user_id"],
+          "kwargs": {}
+        },
+        "fetch_token": {
+          "args": ["redirect_uri", "authorization_response"],
+          "kwargs": {}
+        },
+        "build_oauth": {
+          "args": ["token"],
+          "kwargs": {}
+        },
+        "is_authorized": {
+          "args": ["oauth"],
+          "kwargs": {}
+        },
+        "is_expired": {
+          "args": ["user_id", "token"],
+          "kwargs": {}
+        },
+        "refresh_token": {
+          "args": ["user_id", "token"],
+          "kwargs": {}
+        }
+      }
+    },
+    {
+      "id": "calendar_event",
+      "type": "EventBlock",
+      "properties": {
+        "oauth_component": "{{oauth_component}}",
+        "scope": [],
+        "graph_url": "{{graph_url}}"
+      },
+      "methods": {
+        "auth_providers": {
+          "args": ["package", "user"],
+          "kwargs": {}
+        },
+        "on_execute": {
+          "args": ["binder", "user", "package", "data"],
+          "kwargs": {}
+        },
+        "create_event": {
+          "args": ["package", "data", "oauth"],
+          "kwargs": {}
+        },
+        "build_text": {
+          "args": ["package", "user", "content", "result"],
+          "kwargs": {}
+        },
+        "build_result": {
+          "args": ["package", "user", "node", "result"],
+          "kwargs": {}
+        },
+        "on_search": {
+          "args": ["package", "user", "node", "query"],
+          "kwargs": {}
+        }
+      }
+    },
+    {
+      "id": "schedule_appointment",
+      "type": "EventBlock",
+      "properties": {
+        "oauth_component": "{{oauth_component}}",
+        "scope": [],
+        "graph_url": "{{graph_url}}",
+        "time_zone": "{{time_zone}}"
+      },
+      "methods": {
+        "auth_providers": {
+          "args": ["package", "user"],
+          "kwargs": {}
+        },
+        "on_execute": {
+          "args": ["package", "user", "data"],
+          "kwargs": {}
+        },
+        "on_search": {
+          "args": ["package", "user", "node", "query"],
+          "kwargs": {}
+        },
+        "create_schedule": {
+          "args": ["oauth", "user", "data"],
+          "kwargs": {}
+        },
+        "create_slot": {
+          "args": ["oauth", "calendar_id", "start", "end", "slot_id", "data"],
+          "kwargs": {}
+        },
+        "book_schedule": {
+          "args": ["oauth", "oauth_user", "data"],
+          "kwargs": {}
+        },
+        "get_calendar_list": {
+          "args": ["oauth", "query"],
+          "kwargs": {}
+        },
+        "get_event_list": {
+          "args": ["oauth", "query", "calendar_id"],
+          "kwargs": {}
+        },
+        "get_slot_list": {
+          "args": ["oauth", "query", "calendar_id", "select_group_id"],
+          "kwargs": {}
+        },
+        "compute_slots": {
+          "args": [
+            "start_datetime",
+            "end_datetime",
+            "interval"
+          ],
+          "kwargs": {
+            "all_day": false
+          }
+        },
+        "compute_endtime": {
+          "args": ["start_time", "duration"],
+          "kwargs": {}
+        }
+      }
+    },
+    {
+      "id": "match_input",
+      "type": "InputBlock",
+      "properties": {},
+      "methods": {
+        "match_input": {
+          "args": ["package", "user", "node", "input", "body"],
+          "kwargs": {}
+        }
+      }
+    },
+    {
+      "id": "compute_slots",
+      "type": "ComputeBlock",
+      "properties": {},
+      "methods": {
+        "compute_slots": {
+          "args": [
+            "anchor_date",
+            "from_date",
+            "to_date",
+            "start_time",
+            "end_time",
+            "duration",
+            "interval",
+            "boundary"
+          ],
+          "kwargs": {}
+        }
+      }
+    },
+    {
+      "id": "check_availability",
+      "type": "ConditionBlock",
+      "properties": {},
+      "methods": {
+        "is_free": {
+          "args": ["oauth", "calendar_id", "start", "end"],
+          "kwargs": {}
+        }
+      }
+    }
+  ]
+}

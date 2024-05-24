@@ -1,0 +1,84 @@
+{
+  "processing_logic": [
+    {
+      "block_id": "match_input",
+      "description": "Matches the user input with the available appointment slots.",
+      "inputs": [
+        "package",
+        "user",
+        "node",
+        "input",
+        "body"
+      ],
+      "outputs": [
+        "matched_slot"
+      ]
+    },
+    {
+      "block_id": "oauth_provider",
+      "description": "Handles OAuth authentication and token management.",
+      "inputs": [
+        "auth_url",
+        "token_url",
+        "client_id",
+        "client_secret",
+        "scope"
+      ],
+      "outputs": [
+        "oauth_token"
+      ]
+    },
+    {
+      "block_id": "schedule_appointment",
+      "description": "Schedules an appointment based on the selected slot and user preferences.",
+      "inputs": [
+        "oauth_token",
+        "user",
+        "package",
+        "data"
+      ],
+      "outputs": [
+        "scheduled_appointment"
+      ],
+      "dependencies": [
+        "oauth_provider"
+      ]
+    },
+    {
+      "block_id": "check_availability",
+      "description": "Checks the availability of the selected slot.",
+      "inputs": [
+        "oauth_token",
+        "calendar_id",
+        "start_time",
+        "end_time"
+      ],
+      "outputs": [
+        "is_available"
+      ],
+      "dependencies": [
+        "schedule_appointment"
+      ]
+    },
+    {
+      "block_id": "compute_slots",
+      "description": "Computes the available appointment slots based on the user's preferences.",
+      "inputs": [
+        "anchor_date",
+        "from_date",
+        "to_date",
+        "start_time",
+        "end_time",
+        "duration",
+        "interval",
+        "boundary"
+      ],
+      "outputs": [
+        "available_slots"
+      ],
+      "dependencies": [
+        "check_availability"
+      ]
+    }
+  ]
+}

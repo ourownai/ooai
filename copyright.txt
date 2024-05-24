@@ -1,0 +1,17 @@
+Copyright (c) 2024 Jonathan Lee
+
+This project and all its contents, including but not limited to source code, documentation, and any associated materials, are the intellectual property of Jonathan Lee.
+
+All rights reserved.
+
+Jonathan Lee retains all copyrights, trademarks, and any other intellectual property rights related to this project. No part of this project may be reproduced, distributed, or transmitted in any form or by any means, including photocopying, recording, or other electronic or mechanical methods, without the prior written permission of the copyright owner, except in the case of brief quotations embodied in critical reviews and certain other noncommercial uses permitted by copyright law.
+
+For permission requests or any inquiries related to the copyright of this project, please contact:
+
+Jonathan Lee
+Singapore
+jonathan@yourown.ai
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the project.
+
+THE PROJECT IS PROVIDED "AS IS," WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE PROJECT OR THE USE OR OTHER DEALINGS IN THE PROJECT.

@@ -1,0 +1,118 @@
+{
+  "user_types": {
+    "admin": {
+      "description": "Administrator user with full access and control.",
+      "permissions": ["read", "write", "delete", "manage"]
+    },
+    "manager": {
+      "description": "User with elevated privileges for managing specific modules or features.",
+      "permissions": ["read", "write", "manage"]
+    },
+    "editor": {
+      "description": "User with permissions to create, edit, and publish content.",
+      "permissions": ["read", "write"]
+    },
+    "contributor": {
+      "description": "User with limited permissions to contribute content.",
+      "permissions": ["read", "write"]
+    },
+    "subscriber": {
+      "description": "User with access to premium or subscription-based features.",
+      "permissions": ["read"]
+    },
+    "guest": {
+      "description": "User with limited access to public features.",
+      "permissions": ["read"]
+    }
+  },
+  "preference_types": {
+    "theme": {
+      "description": "Preferred color theme for the user interface.",
+      "value_type": "string",
+      "default_value": "default",
+      "allowed_values": ["default", "dark", "light"]
+    },
+    "language": {
+      "description": "Preferred language for the user interface and content.",
+      "value_type": "string",
+      "default_value": "en",
+      "allowed_values": ["en", "es", "fr", "de"]
+    },
+    "notification_settings": {
+      "description": "Settings for receiving notifications and alerts.",
+      "value_type": "object",
+      "default_value": {
+        "email_notifications": true,
+        "push_notifications": false
+      },
+      "properties": {
+        "email_notifications": {
+          "type": "boolean",
+          "description": "Enable email notifications."
+        },
+        "push_notifications": {
+          "type": "boolean",
+          "description": "Enable push notifications."
+        }
+      }
+    },
+    "privacy_settings": {
+      "description": "Settings related to privacy and data sharing.",
+      "value_type": "object",
+      "default_value": {
+        "share_usage_data": false,
+        "personalized_ads": false
+      },
+      "properties": {
+        "share_usage_data": {
+          "type": "boolean",
+          "description": "Allow sharing of usage data with third parties."
+        },
+        "personalized_ads": {
+          "type": "boolean",
+          "description": "Allow personalized advertisements."
+        }
+      }
+    },
+    "accessibility_settings": {
+      "description": "Settings for accessibility features and enhancements.",
+      "value_type": "object",
+      "default_value": {
+        "high_contrast_mode": false,
+        "text_size": "medium"
+      },
+      "properties": {
+        "high_contrast_mode": {
+          "type": "boolean",
+          "description": "Enable high contrast mode for improved visibility."
+        },
+        "text_size": {
+          "type": "string",
+          "description": "Preferred text size.",
+          "allowed_values": ["small", "medium", "large"]
+        }
+      }
+    },
+    "integration_settings": {
+      "description": "Settings for integrating with external services or platforms.",
+      "value_type": "object",
+      "default_value": {
+        "enable_api_access": false,
+        "connected_accounts": []
+      },
+      "properties": {
+        "enable_api_access": {
+          "type": "boolean",
+          "description": "Enable access to the application's API."
+        },
+        "connected_accounts": {
+          "type": "array",
+          "description": "List of connected third-party accounts.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

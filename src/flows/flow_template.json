@@ -1,0 +1,21 @@
+{
+  "flow_name": {
+    "name": "Flow Name",
+    "start_block_id": "block_id",
+    "blocks": [
+      {
+        "id": "block_id",
+        "type": "BlockType",
+        "properties": {
+          "property_key": "property_value"
+        },
+        "connections": {
+          "next_block_id": "block_id"
+        },
+        "weights": {
+          "block_id": 0.5
+        }
+      }
+    ]
+  }
+}
